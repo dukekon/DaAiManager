@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DaAiManager.ViewModels"
+             xmlns:usemi="https://irihi.tech/ursa"
+             x:DataType="vm:GridViewModel"
+             x:Class="DaAiManager.Views.GridView">
+    <UserControl.Styles>
+        <Style Selector="DataGridRow">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="ClipToBounds" Value="True" />
+            <Style Selector="^:selected">
+                <Setter Property="Foreground" Value="#fff" />
+                <Style Selector="^ Border#BackgroundBorder">
+                    <Setter Property="Background" Value="#0077fa" />
+                </Style>
+            </Style>
+        </Style>
+        <Style Selector="DataGridCell TextBlock, DataGridCell TextBox, DataGridColumnHeader TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Height" Value="40" />
+        </Style>
+        <Style Selector="DataGridCell">
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Height" Value="50" />
+            <Style Selector="^:current Rectangle#CurrencyVisual">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^:focus Panel#FocusVisual">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^ TextBox">
+                <Setter Property="Height" Value="30" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="Background" Value="White" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Style Selector="^:pointerover Border#PART_ContentPresenterBorder">
+                    <Setter Property="Background" Value="White" />
+                </Style>
+            </Style>
+            <Style Selector="^ usemi|DateTimePicker">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="White" />
+                <Style Selector="^ TextBox">
+                    <Setter Property="Margin" Value="16,0,-16,0" />
+                </Style>
+                <Style Selector="^:pointerover Border#Background">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </Style>
+        </Style>
+    </UserControl.Styles>
+    <DockPanel>
+        <DataGrid ItemsSource="{Binding DataItems}" SelectionMode="Extended">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="160" Header="客户" Binding="{Binding Customer}" CanUserSort="True" />
+                <DataGridTextColumn Width="160" Header="护工" Binding="{Binding Caregivers}" />
+                <DataGridTemplateColumn Width="240" Header="上工时间">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StartTime, StringFormat='yyyy-MM-dd hh:mm'}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <usemi:DateTimePicker SelectedDate="{Binding StartTime}" DisplayFormat="yyyy-MM-dd hh:mm" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="240" Header="下工时间">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding EndTime, StringFormat='yyyy-MM-dd hh:mm'}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <usemi:DateTimePicker SelectedDate="{Binding EndTime}" DisplayFormat="yyyy-MM-dd hh:mm" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Width="160" IsReadOnly="True" Header="总计工时" Binding="{Binding ManHour}" />
+                <DataGridTextColumn Width="160" IsReadOnly="True" Header="总计金额"
+                                    Binding="{Binding Amount, StringFormat=C2}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>
